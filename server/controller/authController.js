@@ -44,7 +44,7 @@ const ClickupCallback = async (req, res) => {
 
     //github OAuth
     res.redirect(
-      `${GithubAuthURL}&clickupEmail=${clickUpuser.email}&clickupToken=${ClickupToken}`
+      `${GithubAuthURL}&clickupEmail=${clickUpuser.email}&clickupToken=${ClickupToken}&clickupName=${clickUpuser.username}`
     ); /// this is make githubOAuth and redirect to /callback/github path
   } catch (error) {
     console.log(error);
@@ -53,37 +53,50 @@ const ClickupCallback = async (req, res) => {
 };
 
 const GithubCallback = async (req, res) => {
-  /// this route will be call as /callback/github?code=****&clickupEmail=***&clickupToken=****
-  const { code: githubCode, clickupEmail, clickupToken } = req.query;
+  try {
+    /// this route will be call as /callback/github?code=****&clickupEmail=***&clickupToken=****
+    const {
+      code: githubCode,
+      clickupEmail,
+      clickupToken,
+      clickupName,
+    } = req.query;
 
-  if (!githubCode) res.status(400).send("Missing github Authorization code");
+    if (!githubCode) res.status(400).send("Missing github Authorization code");
 
-  /// now going to retrive token from github using this approach
-  const githubTokenResponse = await axios.post(TokenAuthGithub, {
-    client_id: process.env.GITHUB_CLIENT_ID,
-    client_secret: process.env.GITHUB_CLIENT_SECRET,
-    code: githubCode,
-    redirect_uri: process.env.GITHUB_REDIRECT_URI,
-  });
+    /// now going to retrive token from github using this approach
+    const githubTokenResponse = await axios.post(TokenAuthGithub, {
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code: githubCode,
+      redirect_uri: process.env.GITHUB_REDIRECT_URI,
+    });
 
-  const githubToken = githubTokenResponse.data.access_token;
+    const githubToken = githubTokenResponse.data.access_token;
 
-  const githubUserResponse = await axios.get(githubUserResponseRoute, {
-    headers: {
-      Authorization: `Bearer ${githubToken}`,
-    },
-  });
+    const githubUserResponse = await axios.get(githubUserResponseRoute, {
+      headers: {
+        Authorization: `Bearer ${githubToken}`,
+      },
+    });
 
-  const user = User.findOneAndUpdate(
-    {
-      email: clickupEmail || githubUserResponse.email,
-    },
-    {
-      name: clickUpuser.name,
-      clickupToken: clickupToken,
-      githubToken: githubToken,
-    }
-  );
+    const user = User.findOneAndUpdate(
+      {
+        email: clickupEmail || githubUserResponse.email,
+      },
+      {
+        name: clickupName,
+        clickupToken: clickupToken,
+        githubToken: githubToken,
+      }
+    );
+
+    const token = generateJWT(user);
+
+    res.status(200).json({ message: "success to login", token: token });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server Error" });
+  }
 };
 
 module.exports = { LoginAccount, ClickupCallback, GithubCallback };
