@@ -1,8 +1,9 @@
 const express = require("express");
-const { LoginAccount, ClickupCallbackk } = require("../controller/authController");
+const { LoginAccount, ClickupCallback, GithubCallback } = require("../controller/authController");
 const router = express.Router();
 
 router.get("/login", LoginAccount);
-router.get("/callback/clickup", ClickupCallbackk);
+router.get("/callback/clickup", ClickupCallback);
+router.get("/callback/github", GithubCallback);
 
 module.exports = router;
