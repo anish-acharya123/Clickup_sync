@@ -1,9 +1,18 @@
 const express = require("express");
 const connectDb = require("./configs/db");
 const cors = require("cors");
+const session = require("express-session");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
+// Initialize the session middleware
+app.use(session({
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.use(express.json());
 

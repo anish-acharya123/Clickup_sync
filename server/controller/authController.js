@@ -11,7 +11,6 @@ const User = require("../models/userModel");
 const generateJWT = require("../utils/generateJwt");
 
 const LoginAccount = (req, res) => {
-  console.log("login success");
   try {
     res.redirect(ClickupURL);
   } catch (error) {
@@ -44,11 +43,13 @@ const ClickupCallback = async (req, res) => {
 
     const clickUpuser = clickupUserDataResponse.data.user;
 
-    console.log(clickUpuser, "clickupuser");
+    // console.log(clickUpuser, "clickupuser");
+    // Store ClickUp data in session
+    req.session.clickupEmail = clickUpuser.email;
+    req.session.clickupToken = ClickupToken;
+    req.session.clickupName = clickUpuser.username;
     //github OAuth
-    res.redirect(
-      `${GithubAuthURL}&clickupEmail=${clickUpuser.email}&clickupToken=${ClickupToken}&clickupName=${clickUpuser.username}`
-    ); /// this is make githubOAuth and redirect to /callback/github path
+    res.redirect(`${GithubAuthURL}`); /// this is make githubOAuth and redirect to /callback/github path
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: "Error in clickup callback" });
@@ -56,16 +57,11 @@ const ClickupCallback = async (req, res) => {
 };
 
 const GithubCallback = async (req, res) => {
-  console.log(req.query);
+  console.log("query", req.query);
   console.log("github-callback");
   try {
     /// this route will be call as /callback/github?code=****&clickupEmail=***&clickupToken=****
-    const {
-      code: githubCode,
-      clickupEmail,
-      clickupToken,
-      clickupName,
-    } = req.query;
+    const { code: githubCode } = req.query;
 
     if (!githubCode) res.status(400).send("Missing github Authorization code");
 
@@ -77,7 +73,7 @@ const GithubCallback = async (req, res) => {
       redirect_uri: process.env.GITHUB_REDIRECT_URI,
     });
 
-    console.log(githubTokenResponse, "githubTokenResponse");
+    // console.log(githubTokenResponse, "githubTokenResponse");
     const githubToken = githubTokenResponse.data.split("=")[1].split("&")[0];
     console.log(githubToken, "githubToken");
 
@@ -88,17 +84,26 @@ const GithubCallback = async (req, res) => {
     });
 
     // console.log(githubUserResponse, "githubuserresponse");
+    // Retrieve the ClickUp data from session
+    const clickupEmail = req.session.clickupEmail;
+    const clickupToken = req.session.clickupToken;
+    const clickupName = req.session.clickupName;
 
-    const user = User.findOneAndUpdate(
+    const user = await User.findOneAndUpdate(
       {
-        email: clickupEmail || githubUserResponse.email,
+        email: clickupEmail,
       },
       {
         name: clickupName,
         clickupToken: clickupToken,
         githubToken: githubToken,
+      },
+      {
+        new: true, // Return the updated document
+        upsert: true, // Create the document if it doesn't exist
       }
     );
+    // await user.save();
 
     const token = generateJWT(user);
 
