@@ -1,16 +1,14 @@
-import Sidebar from "@/components/Layouts/SideBar";
 import MaxWidthContainer from "@/components/Wrapper/Maxwidth";
 
 const DashBoard = () => {
   return (
-    <div className=" ">
-      <MaxWidthContainer>
+    <MaxWidthContainer>
+      <div className=" ">
         <div className="flex gap-4 w-full ">
-          <Sidebar />
-          <div className="border w-3/4 bg-white">dashboard</div>
+          <div className=" w-full ">dashboard</div>
         </div>
-      </MaxWidthContainer>
-    </div>
+      </div>
+    </MaxWidthContainer>
   );
 };
 
