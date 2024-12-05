@@ -15,7 +15,10 @@ const SidebarRoutes = () => {
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <a
+                  href={`https://app.clickup.com/9018669323/${item.title.toLowerCase()}`}
+                  target="_blank"
+                >
                   <item.icon />
                   <span>{item.title}</span>
                 </a>

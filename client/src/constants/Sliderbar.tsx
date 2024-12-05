@@ -3,7 +3,6 @@ import {
   Briefcase,
   Home,
   Inbox,
-  LayoutDashboard,
   LayoutDashboardIcon,
   Projector,
 } from "lucide-react";

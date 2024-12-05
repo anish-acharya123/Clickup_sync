@@ -21,7 +21,7 @@ const SidebarProfile = () => {
       withCredentials: true,
     }
   );
-  console.log(data, isLoading, isFetching, error);
+  console.log(isLoading, isFetching, error);
   return (
     <div>
       <SidebarHeader>

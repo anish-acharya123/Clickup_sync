@@ -10,10 +10,7 @@ const GetuserInfo = async (req, res) => {
       res.status(404).json({ msg: "User not found" });
     }
 
-    console.log(ClickupToken);
-    console.log("process....");
     const userInfo = await getClickupUserinfo(ClickupToken.clickupToken);
-    console.log(userInfo);
 
     res.status(201).json(userInfo);
   } catch (error) {

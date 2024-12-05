@@ -6,6 +6,7 @@ export const routes = [
     id: 1,
     path: "/",
     element: <DashBoard />,
+    protected: true
   },
   {
     id: 2,
