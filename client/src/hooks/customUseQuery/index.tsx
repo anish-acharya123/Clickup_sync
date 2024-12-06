@@ -1,5 +1,6 @@
 import { useQuery, QueryKey } from "react-query";
 import axios, { AxiosRequestConfig } from "axios";
+axios.defaults.withCredentials = true;
 
 const API = async <T,>(
   api: string,

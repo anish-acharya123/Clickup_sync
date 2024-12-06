@@ -11,7 +11,7 @@ const GetuserInfo = async (req, res) => {
     }
 
     const userInfo = await getClickupData("/user", ClickupToken.clickupToken);
-    console.log(userInfo, "userinfo");
+    // console.log(userInfo, "userinfo");
 
     res.status(201).json(userInfo);
   } catch (error) {

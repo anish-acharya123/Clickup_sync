@@ -21,7 +21,7 @@ const Workspace_task = async (req, res) => {
       user.clickupToken
     );
 
-    console.log(tasksResponse.tasks, "anish");
+    // console.log(tasksResponse.tasks, "anish");
     const tasks = tasksResponse.tasks;
     res.status(200).json({ workspaces, tasks });
   } catch (error) {

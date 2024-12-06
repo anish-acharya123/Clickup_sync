@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -36,7 +37,6 @@ const SidebarWorkspaces = () => {
     fetchWorkspaceTasks();
   }, []);
 
-  console.log(workspaces, tasks);
 
   return (
     <SidebarGroup>

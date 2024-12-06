@@ -83,7 +83,7 @@ const GithubCallback = async (req, res) => {
       },
     });
 
-    // console.log(githubUserResponse, "githubuserresponse");
+    console.log(githubUserResponse, "githubuserresponse");
     // Retrieve the ClickUp data from session
     const clickupEmail = req.session.clickupEmail;
     const clickupToken = req.session.clickupToken;
@@ -97,6 +97,7 @@ const GithubCallback = async (req, res) => {
         name: clickupName,
         clickupToken: clickupToken,
         githubToken: githubToken,
+        githubName: githubUserResponse.data.login,
       },
       {
         new: true, // Return the updated document
