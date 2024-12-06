@@ -2,10 +2,15 @@ const express = require("express");
 const connectDb = require("./configs/db");
 const cors = require("cors");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const app = express();
+
 const PORT = process.env.PORT || 5000;
+
+//middle ware
+app.use(cookieParser());
 
 // Initialize the session middleware
 app.use(
@@ -33,6 +38,8 @@ app.use("/auth", require("./routes/authRoutes"));
 
 //user
 app.use("/user", require("./routes/userRoutes"));
+
+
 
 // Start server
 app.listen(PORT, () =>

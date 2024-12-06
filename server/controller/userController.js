@@ -1,5 +1,5 @@
 const User = require("../models/userModel");
-const getClickupUserinfo = require("../utils/getClickupUserinfo");
+const { getClickupData } = require("../utils/getClickupUserinfo");
 
 const GetuserInfo = async (req, res) => {
   const { email } = req.user;
@@ -10,7 +10,8 @@ const GetuserInfo = async (req, res) => {
       res.status(404).json({ msg: "User not found" });
     }
 
-    const userInfo = await getClickupUserinfo(ClickupToken.clickupToken);
+    const userInfo = await getClickupData("/user", ClickupToken.clickupToken);
+    console.log(userInfo, "userinfo");
 
     res.status(201).json(userInfo);
   } catch (error) {
