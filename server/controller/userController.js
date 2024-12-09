@@ -19,4 +19,14 @@ const GetuserInfo = async (req, res) => {
   }
 };
 
-module.exports = { GetuserInfo };
+const validateUser = (req, res) => {
+  try {
+    // If the middleware allows the request to reach here, the user is authenticated.
+    res.status(200).json({ message: "User is authenticated", user: req.user });
+  } catch (error) {
+    console.error("Validation Error:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+module.exports = { GetuserInfo, validateUser };

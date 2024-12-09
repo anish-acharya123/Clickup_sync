@@ -3,7 +3,7 @@ import EachTaskGithubAssign from "@/components/Layouts/EachTaskGithubAssign";
 import { Button } from "@/components/ui/button";
 import { CardFooter } from "@/components/ui/card";
 import MaxWidthContainer from "@/components/Wrapper/Maxwidth";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useState } from "react";
 import { useMutation } from "react-query";
@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 
 const EachTask = () => {
   const { taskId } = useParams();
+  const { toast } = useToast();
 
   const mapRepoMutation = useMutation(
     (repoName: string) =>

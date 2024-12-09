@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: true },
-  email: { type: String },
+  email: { type: String, required: true, unique: true },
+  name: { type: String },
   clickupToken: { type: String },
   githubToken: { type: String },
   githubName: { type: String },

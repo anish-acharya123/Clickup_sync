@@ -41,18 +41,18 @@ const createGitHubIssue = async (req, res) => {
     console.log(name, description, status);
     // Create GitHub issue
 
-    console.log(repoName);
-    console.log("GitHub Request:", {
-      repoName,
-      headers: { Authorization: `Bearer ${user.githubToken}` },
-      data: {
-        title: name,
-        body: `### ClickUp Task: [${taskId}]\n${
-          description || "No description provided."
-        }`,
-        labels: [status.status || "No Status"],
-      },
-    });
+    // console.log(repoName);
+    // console.log("GitHub Request:", {
+    //   repoName,
+    //   headers: { Authorization: `Bearer ${user.githubToken}` },
+    //   data: {
+    //     title: name,
+    //     body: `### ClickUp Task: [${taskId}]\n${
+    //       description || "No description provided."
+    //     }`,
+    //     labels: [status.status || "No Status"],
+    //   },
+    // });
 
     try {
       const githubResponse = await axios.post(
