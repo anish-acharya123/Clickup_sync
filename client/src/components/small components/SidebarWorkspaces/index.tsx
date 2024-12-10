@@ -12,11 +12,12 @@ import {
 import axios from "axios";
 import { FolderDown, Logs } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SidebarWorkspaces = () => {
   const [workspaces, setWorkspaces] = useState<any>([]);
   const [tasks, setTasks] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWorkspaceTasks = async () => {
@@ -37,7 +38,6 @@ const SidebarWorkspaces = () => {
     fetchWorkspaceTasks();
   }, []);
 
-
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Workspaces</SidebarGroupLabel>
@@ -46,7 +46,9 @@ const SidebarWorkspaces = () => {
           workspaces.map((workspace: any) => (
             <SidebarMenu key={workspace.id}>
               <SidebarMenuItem>
-                <SidebarMenuButton>
+                <SidebarMenuButton
+                  onClick={() => navigate(`/workspace/${workspace.id}`)}
+                >
                   <FolderDown className="text-yellow-700" />
                   <span>{workspace.name}</span>
                 </SidebarMenuButton>

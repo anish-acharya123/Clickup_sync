@@ -2,6 +2,7 @@ import NotFound from "@/pages/404/NotFound";
 import DashBoard from "@/pages/Dashboard";
 import EachTask from "@/pages/EachTask";
 import Login from "@/pages/Login";
+import WorkSpace from "@/pages/Workspace";
 
 export const routes = [
   {
@@ -29,6 +30,12 @@ export const routes = [
   },
   {
     id: 5,
+    path: "/workspace/:workspaceId",
+    protected: true,
+    element: <WorkSpace />,
+  },
+  {
+    id: 6,
     path: "*",
     element: <NotFound />,
   },

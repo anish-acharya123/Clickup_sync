@@ -4,11 +4,14 @@ const { GetuserInfo, validateUser } = require("../controller/userController");
 const { Workspace_task } = require("../controller/wokspaceController");
 const {
   FetchEachTask,
-  mapTaskToRepo,
+  mapWorkspaceToRepo,
+  getWorkspaceDetails,
 } = require("../controller/TaskController");
 const {
   Fetchrepos,
   createGitHubIssue,
+  createGitHubIssues,
+  assignWorkspaceTasksToRepo,
 } = require("../controller/githubController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 
@@ -21,8 +24,20 @@ router.get("/task/:taskId", verifyJWT, FetchEachTask);
 
 // github fetch
 router.get("/github-repos", verifyJWT, Fetchrepos);
-router.post("/task/map-repo", mapTaskToRepo);
-router.post("/task/create-github-issue", verifyJWT, createGitHubIssue);
+// router.post("/task/map-repo", mapTaskToRepo);
+// router.post("/task/create-github-issue",authMiddleware , createGitHubIssue);
+
+router.get(
+  "/workspace-details/:workspaceId",
+  authMiddleware,
+  getWorkspaceDetails
+);
+
+///map workspace to repo
+router.post("/map-workspace-repo", authMiddleware, mapWorkspaceToRepo);
+router.post("/create-github-issue", authMiddleware, assignWorkspaceTasksToRepo);
+///
+// router.post("/get-repo-for-workspace/:workspaceId", createGitHubIssues);
 
 //authorization
 router.get("/validate", authMiddleware, validateUser);
